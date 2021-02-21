@@ -1,0 +1,8 @@
+{
+    "C_Cpp.errorSquiggles": "Disabled",
+    "files.associations": {
+        "sudoku.h": "c",
+        "sudokufunc.h": "c",
+        "struct.h": "c"
+    }
+}
