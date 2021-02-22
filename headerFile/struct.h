@@ -2,11 +2,11 @@
 #define STRUCT_H
 
 typedef struct oneBox{
-    int little_Box[3][3];
+    int** small_Box;
 } OneBox;
 
-typedef struct sudoku{
+typedef struct _sudoku{
     OneBox big_Box[3][3];
-} SudoKu;
+} Sudoku;
 
 #endif

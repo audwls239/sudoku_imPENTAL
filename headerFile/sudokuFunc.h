@@ -1,14 +1,10 @@
-#ifndef SUDOKU_FUNC_H
-#define SUDOKU_FUNC_H
+#ifndef Sudoku_FUNC_H
+#define Sudoku_FUNC_H
 
-void createNewGround(void);
-
-void createAnother();
+void createNewGround(Sudoku* doku);
 
 int createNumber(void);
 
-int** matrixProduct(int [][3], int [][3]);
-
-int** matrixProductDP(int**, int [][3]);
+int** matrixMul(int**, int**);
 
 #endif
