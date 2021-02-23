@@ -1,6 +1,6 @@
 #ifndef PRINT_H
 #define PRINT_H
 
-void sudokuPrint(Sudoku* doku);
+void sudokuPrint(OneBox [3][3]);
 
 #endif

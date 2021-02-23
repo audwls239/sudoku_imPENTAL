@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <memory.h>
 
 #include "../headerFile/struct.h"
 #include "../headerFile/sudokuFunc.h"
 #include "../headerFile/print.h"
+
+#define firstBox doku -> big_Box[0][0].small_Box 
 
 // Easy 모드 스도쿠 생성용 행렬
 // x1[3][3] = 
@@ -16,7 +19,7 @@
 //     {0, 0, 1}
 //     {1, 0, 0}
 
-void createNewGround(Sudoku* doku){
+void createNewBoard(Sudoku* doku){
     int i, j, k;
     
     /* 곱하기용 행렬 생성 */
@@ -26,6 +29,11 @@ void createNewGround(Sudoku* doku){
     for(i = 0; i < 3; i++){
         x1[i] = malloc(sizeof(int) * 3);
         x2[i] = malloc(sizeof(int) * 3);
+
+        for(j = 0; j < 3; j++){
+            x1[i][j] = 0;
+            x2[i][j] = 0;
+        }
     }
     x1[0][2] = 1;
     x1[1][0] = 1;
@@ -48,31 +56,31 @@ void createNewGround(Sudoku* doku){
     // 0번 박스에 난수 생성
     for(i = 0; i < 3; i++) {
         for(j = 0; j < 3; j++)
-            doku -> big_Box[0][0].small_Box[i][j] = createNumber();
+            firstBox[i][j] = createNumber();
     }
 
     // [0][1], [0][2], [1][0]번 박스 생성
-    doku -> big_Box[0][1].small_Box = matrixMul(x2, doku -> big_Box[0][0].small_Box);
-    doku -> big_Box[0][2].small_Box = matrixMul(x1, doku -> big_Box[0][0].small_Box);
-    doku -> big_Box[1][0].small_Box = matrixMul(doku -> big_Box[0][0].small_Box, x1);
+    doku -> big_Box[0][1].small_Box = matrixMul(x2, firstBox);
+    doku -> big_Box[0][2].small_Box = matrixMul(x1, firstBox);
+    doku -> big_Box[1][0].small_Box = matrixMul(firstBox, x1);
 
     // [1][1]번 박스 생성
-    doku -> big_Box[1][1].small_Box = matrixMul(x2, doku -> big_Box[0][0].small_Box);
+    doku -> big_Box[1][1].small_Box = matrixMul(x2, firstBox);
     doku -> big_Box[1][1].small_Box = matrixMul(doku -> big_Box[1][1].small_Box, x1);
 
     // [1][2]번 박스 생성
-    doku -> big_Box[1][2].small_Box = matrixMul(x1, doku -> big_Box[0][0].small_Box);
+    doku -> big_Box[1][2].small_Box = matrixMul(x1, firstBox);
     doku -> big_Box[1][2].small_Box = matrixMul(doku -> big_Box[1][2].small_Box, x1);
 
     // [2][0]번 박스 생성
-    doku -> big_Box[2][0].small_Box = matrixMul(doku -> big_Box[0][0].small_Box, x2);
+    doku -> big_Box[2][0].small_Box = matrixMul(firstBox, x2);
 
     // [2][1]번 박스 생성
-    doku -> big_Box[2][1].small_Box = matrixMul(x2, doku -> big_Box[0][0].small_Box);
+    doku -> big_Box[2][1].small_Box = matrixMul(x2, firstBox);
     doku -> big_Box[2][1].small_Box = matrixMul(doku -> big_Box[2][1].small_Box, x2);
 
     // [2][2]번 박스 생성
-    doku -> big_Box[2][2].small_Box = matrixMul(x1, doku -> big_Box[0][0].small_Box);
+    doku -> big_Box[2][2].small_Box = matrixMul(x1, firstBox);
     doku -> big_Box[2][2].small_Box = matrixMul(doku -> big_Box[2][2].small_Box, x2);
 }
 
@@ -128,4 +136,15 @@ int** matrixMul(int** arr1, int** arr2){
     }
 
     return new;
+}
+
+void createField(Sudoku* doku){
+    srand(time(NULL));
+
+    memcpy(doku -> field_box, doku -> big_Box, sizeof(doku -> big_Box));
+
+    int amount = rand() % 13 + 52;
+    OneBox state[3][3];
+
+    return;
 }

@@ -11,11 +11,15 @@ int main(void){
     Sudoku doku;
     int i, j;
 
-    createNewGround(&doku);
+    createNewBoard(&doku);
 
-    sudokuPrint(&doku);
-
+    sudokuPrint(doku.big_Box);
     printf("\n");
+
+    createField(&doku);
+
+    sudokuPrint(doku.field_box);
+
 
     return 0;
 }

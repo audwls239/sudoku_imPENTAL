@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../headerFile/struct.h"
 #include "../headerFile/sudokuFunc.h"
 #include "../headerFile/print.h"
 
-void sudokuPrint(Sudoku* doku){
+void sudokuPrint(OneBox matrix[3][3]){
     int bigX, bigY, smallX, smallY;
     int i, j;
 
@@ -19,7 +20,7 @@ void sudokuPrint(Sudoku* doku){
             printf("■ ");
             for(bigX = 0; bigX < 3; bigX++){
                 for(smallX = 0; smallX < 3; smallX++){
-                    printf("%d ", doku -> big_Box[bigY][bigX].small_Box[smallY][smallX]);
+                    printf("%d ", matrix[bigY][bigX].small_Box[smallY][smallX]);
                 }
                 printf("■ ");
             }
