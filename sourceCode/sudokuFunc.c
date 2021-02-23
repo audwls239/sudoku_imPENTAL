@@ -29,12 +29,13 @@ void createNewBoard(Sudoku* doku){
     for(i = 0; i < 3; i++){
         x1[i] = malloc(sizeof(int) * 3);
         x2[i] = malloc(sizeof(int) * 3);
-
-        for(j = 0; j < 3; j++){
-            x1[i][j] = 0;
-            x2[i][j] = 0;
-        }
     }
+
+    for(i = 0; i < 3; i++){
+        memset(x1[i], 0, sizeof(int) * 3);
+        memset(x2[i], 0, sizeof(int) * 3);
+    }
+    
     x1[0][2] = 1;
     x1[1][0] = 1;
     x1[2][1] = 1;
@@ -82,6 +83,13 @@ void createNewBoard(Sudoku* doku){
     // [2][2]번 박스 생성
     doku -> big_Box[2][2].small_Box = matrixMul(x1, firstBox);
     doku -> big_Box[2][2].small_Box = matrixMul(doku -> big_Box[2][2].small_Box, x2);
+
+    for(i = 0; i < 3; i++){
+        free(x1[i]);
+        free(x2[i]);
+    }
+    free(x1);
+    free(x2);
 }
 
 /* 현 공간에 존재하지 않는 숫자 생성 */
@@ -141,10 +149,20 @@ int** matrixMul(int** arr1, int** arr2){
 void createField(Sudoku* doku){
     srand(time(NULL));
 
-    memcpy(doku -> field_box, doku -> big_Box, sizeof(doku -> big_Box));
+    int i, j, k;
+    int amount = rand() % 13 + 52;  // 삭제할 슬롯 갯수 랜덤 출력
+    memcpy(doku -> field_box, doku -> big_Box, sizeof(doku -> big_Box));    // 플레이할 게임판 생성
 
-    int amount = rand() % 13 + 52;
-    OneBox state[3][3];
+    OneBox state[3][3];             // 삭제된 슬롯 확인용
+    memcpy(state, doku -> big_Box, sizeof(doku -> big_Box));    // 삭제된 슬롯 확인용
 
-    return;
+    for(i = 0; i < 3; i++){
+        for(j = 0; j < 3; j++){
+            for(k = 0; k < 3; k++)
+                memset(state[i][j].small_Box[k], 0, sizeof(int) * 3);
+        }
+    }
+
+    puts("상태체크용 보드 출력");
+    sudokuPrint(state);
 }

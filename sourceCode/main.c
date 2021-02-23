@@ -9,17 +9,17 @@
 
 int main(void){
     Sudoku doku;
-    int i, j;
 
     createNewBoard(&doku);
 
+    puts("정답 출력");
     sudokuPrint(doku.big_Box);
     printf("\n");
 
     createField(&doku);
 
+    puts("플레이용 보드 출력");
     sudokuPrint(doku.field_box);
-
 
     return 0;
 }
