@@ -1,59 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
-#include <memory.h>
 
 #include "../headerFile/struct.h"
 #include "../headerFile/sudokuFunc.h"
 #include "../headerFile/print.h"
 
-#define firstBox doku -> big_Box[0][0].small_Box 
-
-// Easy 모드 스도쿠 생성용 행렬
-// x1[3][3] = 
-//     {0, 0, 1}
-//     {1, 0, 0}
-//     {0, 1, 0}
-// x2[3][3] = 
-//     {0, 1, 0}
-//     {0, 0, 1}
-//     {1, 0, 0}
+#define firstBox doku -> a_Box[0][0].s_Box 
 
 void createNewBoard(Sudoku* doku){
-    int i, j, k;
-    
-    /* 곱하기용 행렬 생성 */
-    int** x1 = malloc(sizeof(int*) * 3);
-    int** x2 = malloc(sizeof(int*) * 3);
+    /* Easy 모드 스도쿠 생성용 행렬 */
+    int x1[3][3] = {
+        {0, 0, 1},
+        {1, 0, 0},
+        {0, 1, 0}
+    };
+    int x2[3][3] = {
+        {0, 1, 0},
+        {0, 0, 1},
+        {1, 0, 0}
+    };
 
-    for(i = 0; i < 3; i++){
-        x1[i] = malloc(sizeof(int) * 3);
-        x2[i] = malloc(sizeof(int) * 3);
-    }
-
-    for(i = 0; i < 3; i++){
-        memset(x1[i], 0, sizeof(int) * 3);
-        memset(x2[i], 0, sizeof(int) * 3);
-    }
-    
-    x1[0][2] = 1;
-    x1[1][0] = 1;
-    x1[2][1] = 1;
-    
-    x2[0][1] = 1;
-    x2[1][2] = 1;
-    x2[2][0] = 1;
-    
-    // 모든 작은박스에 3x3 배열 할당
-    for(i = 0; i < 3; i++){
-        for(j = 0; j < 3; j++){
-            doku -> big_Box[i][j].small_Box = malloc(sizeof(int*) * 3);
-
-            for(k = 0; k < 3; k++)
-                doku -> big_Box[i][j].small_Box[k] = malloc(sizeof(int) * 3);
-        }
-    }
-    
+    int i, j;
+    int temp[3][3];
     // 0번 박스에 난수 생성
     for(i = 0; i < 3; i++) {
         for(j = 0; j < 3; j++)
@@ -61,35 +31,28 @@ void createNewBoard(Sudoku* doku){
     }
 
     // [0][1], [0][2], [1][0]번 박스 생성
-    doku -> big_Box[0][1].small_Box = matrixMul(x2, firstBox);
-    doku -> big_Box[0][2].small_Box = matrixMul(x1, firstBox);
-    doku -> big_Box[1][0].small_Box = matrixMul(firstBox, x1);
+    matrixMul(doku -> a_Box[0][1].s_Box, x2, firstBox);
+    matrixMul(doku -> a_Box[0][2].s_Box, x1, firstBox);
+    matrixMul(doku -> a_Box[1][0].s_Box, firstBox, x1);
 
     // [1][1]번 박스 생성
-    doku -> big_Box[1][1].small_Box = matrixMul(x2, firstBox);
-    doku -> big_Box[1][1].small_Box = matrixMul(doku -> big_Box[1][1].small_Box, x1);
+    matrixMul(temp, x2, firstBox);
+    matrixMul(doku -> a_Box[1][1].s_Box, temp, x1);
 
     // [1][2]번 박스 생성
-    doku -> big_Box[1][2].small_Box = matrixMul(x1, firstBox);
-    doku -> big_Box[1][2].small_Box = matrixMul(doku -> big_Box[1][2].small_Box, x1);
+    matrixMul(temp, x1, firstBox);
+    matrixMul(doku -> a_Box[1][2].s_Box, temp, x1);
 
     // [2][0]번 박스 생성
-    doku -> big_Box[2][0].small_Box = matrixMul(firstBox, x2);
+    matrixMul(doku -> a_Box[2][0].s_Box, firstBox, x2);
 
     // [2][1]번 박스 생성
-    doku -> big_Box[2][1].small_Box = matrixMul(x2, firstBox);
-    doku -> big_Box[2][1].small_Box = matrixMul(doku -> big_Box[2][1].small_Box, x2);
+    matrixMul(temp, x2, firstBox);
+    matrixMul(doku -> a_Box[2][1].s_Box, temp, x2);
 
     // [2][2]번 박스 생성
-    doku -> big_Box[2][2].small_Box = matrixMul(x1, firstBox);
-    doku -> big_Box[2][2].small_Box = matrixMul(doku -> big_Box[2][2].small_Box, x2);
-
-    for(i = 0; i < 3; i++){
-        free(x1[i]);
-        free(x2[i]);
-    }
-    free(x1);
-    free(x2);
+    matrixMul(temp, x1, firstBox);
+    matrixMul(doku -> a_Box[2][2].s_Box, temp, x2);
 }
 
 /* 현 공간에 존재하지 않는 숫자 생성 */
@@ -112,10 +75,9 @@ int createNumber(void){
 }
 
 /* 행렬의 곱 */
-int** matrixMul(int** arr1, int** arr2){
+void matrixMul(int resultMatrix[3][3], int arr1[3][3], int arr2[3][3]){
     int i, j, k;
     int result;
-    int resultMatrix[3][3];
 
     /* 행렬의 곱 */
     for(i = 0; i < 3; i++){
@@ -129,40 +91,31 @@ int** matrixMul(int** arr1, int** arr2){
             resultMatrix[i][j] = result;
         }
     }
-
-    /* 반환할 포인터 배열 생성 */
-    int** new = malloc(sizeof(int*) * 3);
-    for(i = 0; i < 3; i++){
-        new[i] = malloc(sizeof(int) * 3);
-    }
-
-    /* 대입 */
-    for(i = 0; i < 3; i++){
-        for(j = 0; j < 3; j++){
-            new[i][j] = resultMatrix[i][j];
-        }
-    }
-
-    return new;
 }
 
 void createField(Sudoku* doku){
     srand(time(NULL));
 
-    int i, j, k;
     int amount = rand() % 13 + 52;  // 삭제할 슬롯 갯수 랜덤 출력
-    memcpy(doku -> field_box, doku -> big_Box, sizeof(doku -> big_Box));    // 플레이할 게임판 생성
+    printf("amount: %d \n", 81 - amount);
 
-    OneBox state[3][3];             // 삭제된 슬롯 확인용
-    memcpy(state, doku -> big_Box, sizeof(doku -> big_Box));    // 삭제된 슬롯 확인용
+    memcpy(doku -> f_Box, doku -> a_Box, sizeof(OneBox[3][3]));     // 플레이용 게임판 생성
+    memset(doku -> state, 0, sizeof(OneBox[3][3]));                 // state 0으로 초기화
 
-    for(i = 0; i < 3; i++){
-        for(j = 0; j < 3; j++){
-            for(k = 0; k < 3; k++)
-                memset(state[i][j].small_Box[k], 0, sizeof(int) * 3);
+    int bigX, bigY, smallX, smallY;
+    int count = 0;
+    while(1){
+        bigX = rand() % 3;
+        bigY = rand() % 3;
+        smallX = rand() % 3;
+        smallY = rand() % 3;
+
+        if(doku -> state[bigY][bigX].s_Box[smallY][smallX] == 0){
+            doku -> state[bigY][bigX].s_Box[smallY][smallX] = 1;
+            doku -> f_Box[bigY][bigX].s_Box[smallY][smallX] = 0;
+            count++;
         }
-    }
 
-    puts("상태체크용 보드 출력");
-    sudokuPrint(state);
+        if(count == amount) break;
+    }
 }

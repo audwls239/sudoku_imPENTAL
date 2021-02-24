@@ -8,18 +8,13 @@
 #include "../headerFile/print.h"
 
 int main(void){
-    Sudoku doku;
+    Sudoku* doku = malloc(sizeof(Sudoku));
 
-    createNewBoard(&doku);
+    createNewBoard(doku);
+    createField(doku);
 
-    puts("정답 출력");
-    sudokuPrint(doku.big_Box);
-    printf("\n");
+    sudokuPrint(doku);
 
-    createField(&doku);
-
-    puts("플레이용 보드 출력");
-    sudokuPrint(doku.field_box);
-
+    free(doku);
     return 0;
 }
