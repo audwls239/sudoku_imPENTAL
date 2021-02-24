@@ -96,7 +96,7 @@ void matrixMul(int resultMatrix[3][3], int arr1[3][3], int arr2[3][3]){
 void createField(Sudoku* doku){
     srand(time(NULL));
 
-    int amount = rand() % 13 + 52;  // 삭제할 슬롯 갯수 랜덤 출력
+    int amount = rand() % 14 + 51;  // 삭제할 슬롯 갯수 랜덤 출력
     printf("amount: %d \n", 81 - amount);
 
     memcpy(doku -> f_Box, doku -> a_Box, sizeof(OneBox[3][3]));     // 플레이용 게임판 생성
