@@ -4,6 +4,7 @@
         "Sudoku.h": "c",
         "Sudokufunc.h": "c",
         "struct.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdlib.h": "c"
     }
 }

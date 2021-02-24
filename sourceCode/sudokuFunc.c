@@ -10,6 +10,9 @@
 #define firstBox doku -> a_Box[0][0].s_Box 
 
 void createNewBoard(Sudoku* doku){
+    int i, j;
+    int temp[3][3];
+    
     /* Easy 모드 스도쿠 생성용 행렬 */
     int x1[3][3] = {
         {0, 0, 1},
@@ -22,8 +25,6 @@ void createNewBoard(Sudoku* doku){
         {1, 0, 0}
     };
 
-    int i, j;
-    int temp[3][3];
     // 0번 박스에 난수 생성
     for(i = 0; i < 3; i++) {
         for(j = 0; j < 3; j++)
@@ -79,7 +80,6 @@ void matrixMul(int resultMatrix[3][3], int arr1[3][3], int arr2[3][3]){
     int i, j, k;
     int result;
 
-    /* 행렬의 곱 */
     for(i = 0; i < 3; i++){
         for(j = 0; j < 3; j++){
             result = 0;

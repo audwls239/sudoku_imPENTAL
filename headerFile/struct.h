@@ -13,4 +13,10 @@ typedef struct _sudoku{
     int posY;
 } Sudoku;
 
+typedef struct _matrix{
+    int width;
+    int height;
+    int** mPtr;
+} Matrix;
+
 #endif
