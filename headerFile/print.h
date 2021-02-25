@@ -5,7 +5,7 @@
 
 void sudokuPrint(Sudoku*);
 
-void sudokuPrintTest33(Matrix*);
+void sudokuPrintTest33(Matrix**);
 
 void matrixPrint(Matrix*);
 

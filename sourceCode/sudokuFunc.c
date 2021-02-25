@@ -7,8 +7,6 @@
 #include "../headerFile/sudokuFunc.h"
 #include "../headerFile/print.h"
 
-#define firstBox &doku -> a_Box[0]
-
 /* 새로운 스도쿠 생성 */
 void createNewBoard(Sudoku* doku){
     int i, j;
@@ -34,30 +32,29 @@ void createNewBoard(Sudoku* doku){
     for(i = 0; i < 9; i++)
         doku -> a_Box[0].mPtr[i] = createNumber();
 
-    printf("\n");
-
+    #define firstBox doku -> a_Box[0]
     // 1, 2, 3번 박스 생성
-    doku -> a_Box[1].mPtr = matrixMul(&x2, firstBox);
-    doku -> a_Box[2].mPtr = matrixMul(&x1, firstBox);
-    doku -> a_Box[3].mPtr = matrixMul(firstBox, &x1);
+    doku -> a_Box[1].mPtr = matrixMul(&x2, &firstBox);
+    doku -> a_Box[2].mPtr = matrixMul(&x1, &firstBox);
+    doku -> a_Box[3].mPtr = matrixMul(&firstBox, &x1);
 
     // [4]번 박스 생성
-    temp.mPtr = matrixMul(&x2, firstBox);
+    temp.mPtr = matrixMul(&x2, &firstBox);
     doku -> a_Box[4].mPtr = matrixMul(&temp, &x1);
 
     // [5]번 박스 생성
-    temp.mPtr = matrixMul(&x1, firstBox);
+    temp.mPtr = matrixMul(&x1, &firstBox);
     doku -> a_Box[5].mPtr = matrixMul(&temp, &x1);
 
     // [6]번 박스 생성
-    doku -> a_Box[6].mPtr = matrixMul(firstBox, &x2);
+    doku -> a_Box[6].mPtr = matrixMul(&firstBox, &x2);
 
     // [7]번 박스 생성
-    temp.mPtr = matrixMul(&x2, firstBox);
+    temp.mPtr = matrixMul(&x2, &firstBox);
     doku -> a_Box[7].mPtr = matrixMul(&temp, &x2);
 
     // [8]번 박스 생성
-    temp.mPtr = matrixMul(&x1, firstBox);
+    temp.mPtr = matrixMul(&x1, &firstBox);
     doku -> a_Box[8].mPtr = matrixMul(&temp, &x2);
 
     free(x1.mPtr);
@@ -85,12 +82,14 @@ int createNumber(void){
 
 /* 행렬의 곱 */
 int* matrixMul(Matrix* mtx1, Matrix* mtx2){
-    int i, j;
+    int i, j, k;
     int* result = malloc(sizeof(int) * 9);
 
     for(i = 0; i < 3; i++){
         for(j = 0; j < 3; j++){
-            result[i * 3 + j] += mtx1 -> mPtr[i * 3 + j] * mtx2 -> mPtr[i + j * 3];
+            for(k = 0; k < 3; k++){
+                result[i * 3 + j] = mtx1 -> mPtr[i * 3 + k] * mtx2 -> mPtr[j + 3 * k];
+            }
         }
     }
 
@@ -104,13 +103,12 @@ void createField(Sudoku* doku){
     int amount = rand() % 14 + 51;  // 삭제할 슬롯 갯수 랜덤 출력
     printf("amount: %d \n", 81 - amount);
 
-    doku -> f_Box = malloc(sizeof(Matrix) * 9);
     for(i = 0; i < 9; i++){
         doku -> f_Box[i].mPtr = malloc(sizeof(int) * 9);   // 유저가 입력할 수 있는 게임판 생성
         doku -> state[i].mPtr = malloc(sizeof(int) * 9);   // 처음 제시된 숫자 판단 여부용 게임판
 
         memcpy(doku -> f_Box[i].mPtr, doku -> a_Box[i].mPtr, sizeof(int) * 9);
-        memset(doku -> state[i].mPtr, 0, sizeof(int) * 9);   // state 0으로 초기화
+        memset(doku -> state[i].mPtr, 0, sizeof(int) * 9);   // state[i] 0으로 초기화
     }
 
     int bigX, bigY, smallX, smallY;

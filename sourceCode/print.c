@@ -43,23 +43,11 @@ void matrixPrint(Matrix* mtx){
             printf("%d ", mtx -> mPtr[y + 3 * x]);
         printf("\n");
     }
+    printf("\n");
 }
 
-void sudokuPrintTest33(Matrix* mtx){
-    int bigX, bigY, smallX, smallY;
 
-    for(bigY = 0; bigY < 3; bigY++){
-        for(bigX = 0; bigX < 3; bigX++){
-            for(smallY = 0; smallY < 3; smallY++){
-                for(smallX = 0; smallX < 3; smallX++){
-                    if(mtx[bigY + 3 * bigX].mPtr[smallY + 3 * smallX] == 0)
-                        printf("  ");
-                    else
-                        printf("%d ", mtx[bigY + 3 * bigX].mPtr[smallY + 3 * smallX]);
-                }
-                printf("  ");
-            }
-            printf("\n");
-        }
-    }
+void sudokuPrintTest33(Matrix** mtx){
+    int i, j, k;
+    printf("%d ", mtx[] -> mPtr[]);
 }
