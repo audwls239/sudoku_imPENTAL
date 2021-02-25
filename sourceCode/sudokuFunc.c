@@ -7,7 +7,7 @@
 #include "../headerFile/sudokuFunc.h"
 #include "../headerFile/print.h"
 
-#define firstBox &doku -> a_Box[0][0]
+#define firstBox &doku -> a_Box[0]
 
 /* 새로운 스도쿠 생성 */
 void createNewBoard(Sudoku* doku){
@@ -15,8 +15,8 @@ void createNewBoard(Sudoku* doku){
     Matrix temp;
 
     /* Easy 모드 스도쿠 생성용 행렬 */
-    Matrix x1 = {3, 3, malloc(sizeof(int) * 9)};
-    Matrix x2 = {3, 3, malloc(sizeof(int) * 9)};
+    Matrix x1 = {malloc(sizeof(int) * 9)};
+    Matrix x2 = {malloc(sizeof(int) * 9)};
 
     memset(x1.mPtr, 0, sizeof(int) * 9);
     memset(x2.mPtr, 0, sizeof(int) * 9);
@@ -30,36 +30,35 @@ void createNewBoard(Sudoku* doku){
     x2.mPtr[6] = 1;      // 1 0 0
     
     // 0번 박스에 난수 생성
-    doku -> a_Box[0][0].mPtr = malloc(sizeof(int) * 9);
+    doku -> a_Box[0].mPtr = malloc(sizeof(int) * 9);
     for(i = 0; i < 9; i++)
-        doku -> a_Box[0][0].mPtr[i] = createNumber();
+        doku -> a_Box[0].mPtr[i] = createNumber();
 
-    matrixPrint(&doku -> a_Box[0][0]);
     printf("\n");
 
-    // [0][1], [0][2], [1][0]번 박스 생성
-    doku -> a_Box[0][1].mPtr = matrixMul(&x2, firstBox);
-    doku -> a_Box[0][2].mPtr = matrixMul(&x1, firstBox);
-    doku -> a_Box[1][0].mPtr = matrixMul(firstBox, &x1);
+    // 1, 2, 3번 박스 생성
+    doku -> a_Box[1].mPtr = matrixMul(&x2, firstBox);
+    doku -> a_Box[2].mPtr = matrixMul(&x1, firstBox);
+    doku -> a_Box[3].mPtr = matrixMul(firstBox, &x1);
 
-    // [1][1]번 박스 생성
+    // [4]번 박스 생성
     temp.mPtr = matrixMul(&x2, firstBox);
-    doku -> a_Box[1][1].mPtr = matrixMul(&temp, &x1);
+    doku -> a_Box[4].mPtr = matrixMul(&temp, &x1);
 
-    // [1][2]번 박스 생성
+    // [5]번 박스 생성
     temp.mPtr = matrixMul(&x1, firstBox);
-    doku -> a_Box[1][2].mPtr = matrixMul(&temp, &x1);
+    doku -> a_Box[5].mPtr = matrixMul(&temp, &x1);
 
-    // [2][0]번 박스 생성
-    doku -> a_Box[2][0].mPtr = matrixMul(firstBox, &x2);
+    // [6]번 박스 생성
+    doku -> a_Box[6].mPtr = matrixMul(firstBox, &x2);
 
-    // [2][1]번 박스 생성
+    // [7]번 박스 생성
     temp.mPtr = matrixMul(&x2, firstBox);
-    doku -> a_Box[2][1].mPtr = matrixMul(&temp, &x2);
+    doku -> a_Box[7].mPtr = matrixMul(&temp, &x2);
 
-    // [2][2]번 박스 생성
+    // [8]번 박스 생성
     temp.mPtr = matrixMul(&x1, firstBox);
-    doku -> a_Box[2][2].mPtr = matrixMul(&temp, &x2);
+    doku -> a_Box[8].mPtr = matrixMul(&temp, &x2);
 
     free(x1.mPtr);
     free(x2.mPtr);
@@ -101,31 +100,30 @@ int* matrixMul(Matrix* mtx1, Matrix* mtx2){
 void createField(Sudoku* doku){
     srand(time(NULL));
 
-    int bigX, bigY, smallX, smallY;
-    int count = 0;
+    int i;
     int amount = rand() % 14 + 51;  // 삭제할 슬롯 갯수 랜덤 출력
     printf("amount: %d \n", 81 - amount);
 
-    for(bigY = 0; bigY < 3; bigY++){
-        for(bigX = 0; bigX < 3; bigX++){
-            doku -> f_Box[bigY][bigX].mPtr = malloc(sizeof(int) * 9);   // 유저가 입력할 수 있는 게임판 생성
-            doku -> state[bigY][bigX].mPtr = malloc(sizeof(int) * 9);   // 처음 제시된 숫자 판단 여부용 게임판
+    doku -> f_Box = malloc(sizeof(Matrix) * 9);
+    for(i = 0; i < 9; i++){
+        doku -> f_Box[i].mPtr = malloc(sizeof(int) * 9);   // 유저가 입력할 수 있는 게임판 생성
+        doku -> state[i].mPtr = malloc(sizeof(int) * 9);   // 처음 제시된 숫자 판단 여부용 게임판
 
-            memcpy(doku -> f_Box[bigY][bigX].mPtr, doku -> a_Box[bigY][bigX].mPtr, sizeof(int) * 9);
-            memset(doku -> state[bigY][bigX].mPtr, 0, sizeof(int) * 9);   // state 0으로 초기화
-        }
-    }    
+        memcpy(doku -> f_Box[i].mPtr, doku -> a_Box[i].mPtr, sizeof(int) * 9);
+        memset(doku -> state[i].mPtr, 0, sizeof(int) * 9);   // state 0으로 초기화
+    }
 
-    while(count != amount){
+    int bigX, bigY, smallX, smallY;
+    while(!amount){
         bigX = rand() % 3;
         bigY = rand() % 3;
         smallX = rand() % 3;
         smallY = rand() % 3;
 
-        if(doku -> state[bigY][bigX].mPtr[smallY + 3 * smallX] == 0){
-            doku -> state[bigY][bigX].mPtr[smallY + 3 * smallX] = 1;
-            doku -> f_Box[bigY][bigX].mPtr[smallY + 3 * smallX] = 0;
-            count++;
+        if(doku -> state[bigY + 3 * bigX].mPtr[smallY + 3 * smallX] == 0){
+            doku -> state[bigY + 3 * bigX].mPtr[smallY + 3 * smallX] = 1;
+            doku -> f_Box[bigY + 3 * bigX].mPtr[smallY + 3 * smallX] = 0;
+            amount--;
         }
     }
 }

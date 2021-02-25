@@ -9,6 +9,8 @@
 
 int main(void){
     Sudoku doku;
+    doku.a_Box = malloc(sizeof(Matrix) * 9);
+    doku.state = malloc(sizeof(Matrix) * 9);
 
     createNewBoard(&doku);
 
