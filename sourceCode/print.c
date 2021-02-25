@@ -20,10 +20,10 @@ void sudokuPrint(Sudoku* doku){
             printf("■ ");
             for(bigX = 0; bigX < 3; bigX++){
                 for(smallX = 0; smallX < 3; smallX++){
-                    if(doku -> f_Box[bigY][bigX].s_Box[smallY][smallX] == 0)
+                    if(doku -> f_Box[bigY][bigX].mPtr[smallY + smallX * 3] == 0)
                         printf("  ");
                     else
-                        printf("%d ", doku -> f_Box[bigY][bigX].s_Box[smallY][smallX]);
+                        printf("%d ", doku -> f_Box[bigY][bigX].mPtr[smallY + smallX * 3]);
                 }
                 printf("■ ");
             }
@@ -35,29 +35,31 @@ void sudokuPrint(Sudoku* doku){
     }
 }
 
-void matrixPrint(OneBox matrix[3][3]){
+void matrixPrint(Matrix* mtx){
+    int x, y;
+
+    for(y = 0; y < 3; y++){
+        for(x = 0; x < 3; x++)
+            printf("%d ", mtx -> mPtr[y + 3 * x]);
+        printf("\n");
+    }
+}
+
+void sudokuPrintTest33(Matrix mtx[3][3]){
     int bigX, bigY, smallX, smallY;
-    int i, j;
 
-    // 천장
-    for(i = 0; i < 13; i++)
-        printf("■ ");
-    printf("\n");
-
-    // 순서 bigY > smallY > bigX > smallX
     for(bigY = 0; bigY < 3; bigY++){
-        for(smallY = 0; smallY < 3; smallY++){
-            printf("■ ");
-            for(bigX = 0; bigX < 3; bigX++){
+        for(bigX = 0; bigX < 3; bigX++){
+            for(smallY = 0; smallY < 3; smallY++){
                 for(smallX = 0; smallX < 3; smallX++){
-                    printf("%d ", matrix[bigY][bigX].s_Box[smallY][smallX]);
+                    if(mtx[bigY][bigX].mPtr[smallY + 3 * smallX] == 0)
+                        printf("  ");
+                    else
+                        printf("%d ", mtx[bigY][bigX].mPtr[smallY + 3 * smallX]);
                 }
-                printf("■ ");
+                printf("  ");
             }
             printf("\n");
         }
-        for(i = 0; i < 13; i++)
-            printf("■ ");
-        printf("\n");
     }
 }

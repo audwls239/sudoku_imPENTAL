@@ -8,13 +8,24 @@
 #include "../headerFile/print.h"
 
 int main(void){
-    Sudoku* doku = malloc(sizeof(Sudoku));
+    Sudoku doku;
 
-    createNewBoard(doku);
-    createField(doku);
+    createNewBoard(&doku);
 
-    sudokuPrint(doku);
+    sudokuPrintTest33(doku.a_Box);
 
-    free(doku);
+    createField(&doku);
+
+    sudokuPrint(&doku);
+
+    puts("a_Box");
+    sudokuPrintTest33(doku.a_Box);
+    puts("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ");
+    puts("f_Box");
+    sudokuPrintTest33(doku.f_Box);
+    puts("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ");
+    puts("state");
+    sudokuPrintTest33(doku.state);
+
     return 0;
 }
