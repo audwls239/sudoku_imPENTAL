@@ -7,6 +7,4 @@ void sudokuPrint(Sudoku*);
 
 void matrixPrint(Matrix*);
 
-void sudokuPrintTest33(Matrix*);
-
 #endif

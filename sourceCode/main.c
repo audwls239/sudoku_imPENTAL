@@ -11,24 +11,7 @@
 #include "../headerFile/print.h"
 #include "../headerFile/system.h"
 #include "../headerFile/gameFunc.h"
-
-#define UP 65
-#define DOWN 66
-#define RIGHT 67
-#define LEFT 68
-
-#define ENTER 10
-
-#define key0 48
-#define key1 49
-#define key2 50
-#define key3 51
-#define key4 52
-#define key5 53
-#define key6 54
-#define key7 55
-#define key8 56
-#define key9 57
+#include "../headerFile/define.h"
 
 int main(void){
     Sudoku doku = {
@@ -76,22 +59,22 @@ int main(void){
             else if(47 < cmd && cmd < 58){
                 int i = 0;
                 switch(cmd){
-                    case key9: i++;
-                    case key8: i++;
-                    case key7: i++;
-                    case key6: i++;
-                    case key5: i++;
-                    case key4: i++;
-                    case key3: i++;
-                    case key2: i++;
-                    case key1: i++;
-                    case key0:
+                    case KEY9: i++;
+                    case KEY8: i++;
+                    case KEY7: i++;
+                    case KEY6: i++;
+                    case KEY5: i++;
+                    case KEY4: i++;
+                    case KEY3: i++;
+                    case KEY2: i++;
+                    case KEY1: i++;
+                    case KEY0:
                     if(doku.state[doku.posX / 3 + doku.posY / 3 * 3].mPtr[doku.posY % 3 * 3 + doku.posX % 3] == 1)
                         doku.f_Box[doku.posX / 3 + doku.posY / 3 * 3].mPtr[doku.posY % 3 * 3 + doku.posX % 3] = i;
                 }
             }
-            else if(cmd == ENTER)
-                puts("ENTER");
+            // else if(cmd == ENTER)
+            //     puts("ENTER");
             // else
             //     printf("%d ", cmd);
         }
