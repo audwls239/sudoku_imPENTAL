@@ -35,7 +35,7 @@ int main(void){
         malloc(sizeof(Matrix) * 9),
         malloc(sizeof(Matrix) * 9),
         malloc(sizeof(Matrix) * 9),
-        0, 8
+        0, 0
     };
 
     /* 셋팅 구간 */
@@ -51,14 +51,15 @@ int main(void){
 
         /* 키 입력 받는 과속 단속 구간 */
         while(((cmd = getchar()) > 0)){
+            /* 커서 이동 */
             if(cmd == 27 && getchar() == 91){
                 switch(getchar()){
                     case UP:
-                        doku.posY++;
+                        doku.posY--;
                         posJudgement(&doku);
                         break;
                     case DOWN:
-                        doku.posY--;
+                        doku.posY++;
                         posJudgement(&doku);
                         break;
                     case LEFT:
@@ -71,10 +72,28 @@ int main(void){
                         break;
                 }
             }
+            /* 숫자 입력 */
+            else if(47 < cmd && cmd < 58){
+                int i = 0;
+                switch(cmd){
+                    case key9: i++;
+                    case key8: i++;
+                    case key7: i++;
+                    case key6: i++;
+                    case key5: i++;
+                    case key4: i++;
+                    case key3: i++;
+                    case key2: i++;
+                    case key1: i++;
+                    case key0:
+                    if(doku.state[doku.posX / 3 + doku.posY / 3 * 3].mPtr[doku.posY % 3 * 3 + doku.posX % 3] == 1)
+                        doku.f_Box[doku.posX / 3 + doku.posY / 3 * 3].mPtr[doku.posY % 3 * 3 + doku.posX % 3] = i;
+                }
+            }
             else if(cmd == ENTER)
                 puts("ENTER");
-            else
-                printf("%d ", cmd);
+            // else
+            //     printf("%d ", cmd);
         }
         /* 과속 단속 구간 종료 */
 
