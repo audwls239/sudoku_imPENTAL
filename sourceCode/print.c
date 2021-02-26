@@ -8,32 +8,32 @@
 /* 스도쿠 출력 */
 void sudokuPrint(Sudoku* doku){
     int bigX, bigY, smallX, smallY;
-    int i, j;
+    int i;
 
-    // 천장
+    system("clear");
+    /* 천장 */
     for(i = 0; i < 13; i++)
         printf("■ ");
     printf("\n");
 
-    // 순서 bigY > smallY > bigX > smallX
     for(bigY = 0; bigY < 3; bigY++){
         for(smallY = 0; smallY < 3; smallY++){
-            printf("■ ");
             for(bigX = 0; bigX < 3; bigX++){
-                for(smallX = 0; smallX < 3; smallX++){
-                    if(doku -> f_Box[bigY + 3 * bigX].mPtr[smallY + smallX * 3] == 0)
-                        printf("  ");
-                    else
-                        printf("%d ", doku -> f_Box[bigY + 3 * bigX].mPtr[smallY + smallX * 3]);
-                }
                 printf("■ ");
+                for(smallX = 0; smallX < 3; smallX++){
+                    if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX])
+                        printf("%d ", doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
+                    else
+                        printf("  ");
+                }
             }
-            printf("\n");
+            printf("■\n");
         }
         for(i = 0; i < 13; i++)
             printf("■ ");
-        printf("\n");
+        printf("\n");        
     }
+
 }
 
 /* 3x3 배열 출력 */

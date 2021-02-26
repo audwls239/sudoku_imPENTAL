@@ -3,6 +3,9 @@
 #include <string.h>
 #include <time.h>
 
+#include <termios.h>
+#include <unistd.h>
+
 #include "../headerFile/struct.h"
 #include "../headerFile/sudokuFunc.h"
 #include "../headerFile/print.h"
@@ -16,17 +19,14 @@ int main(void){
     };
 
     createNewBoard(&doku);
-
     createField(&doku);
 
-    puts("a_Box");
-    sudokuPrintTest33(doku.a_Box);
-    puts("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ");
-    puts("f_Box");
-    sudokuPrintTest33(doku.f_Box);
-    puts("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ");
-    puts("state");
-    sudokuPrintTest33(doku.state);
+    int i = 0;
+    while(1){
+        usleep(100000);
+        sudokuPrint(&doku);
+        printf("%d \n", i++);
+    }
 
     return 0;
 }
