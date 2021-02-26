@@ -82,13 +82,13 @@ int createNumber(void){
 
 /* 행렬의 곱 */
 int* matrixMul(Matrix* mtx1, Matrix* mtx2){
-    int i, j, k;
+    int first, second, third;
     int* result = malloc(sizeof(int) * 9);
 
-    for(i = 0; i < 3; i++){
-        for(j = 0; j < 3; j++){
-            for(k = 0; k < 3; k++){
-                result[i * 3 + j] = mtx1 -> mPtr[i * 3 + k] * mtx2 -> mPtr[j + 3 * k];
+    for(first = 0; first < 3; first++){
+        for(second = 0; second < 3; second++){
+            for(third = 0; third < 3; third++){
+                result[first * 3 + second] += mtx1 -> mPtr[first * 3 + third] * mtx2 -> mPtr[second + 3 * third];
             }
         }
     }
@@ -112,15 +112,15 @@ void createField(Sudoku* doku){
     }
 
     int bigX, bigY, smallX, smallY;
-    while(!amount){
+    while(amount){
         bigX = rand() % 3;
         bigY = rand() % 3;
         smallX = rand() % 3;
         smallY = rand() % 3;
 
-        if(doku -> state[bigY + 3 * bigX].mPtr[smallY + 3 * smallX] == 0){
-            doku -> state[bigY + 3 * bigX].mPtr[smallY + 3 * smallX] = 1;
-            doku -> f_Box[bigY + 3 * bigX].mPtr[smallY + 3 * smallX] = 0;
+        if(doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 0){
+            doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] = 1;
+            doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] = 0;
             amount--;
         }
     }

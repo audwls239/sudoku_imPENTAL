@@ -8,25 +8,25 @@
 #include "../headerFile/print.h"
 
 int main(void){
-    Sudoku doku;
-    doku.a_Box = malloc(sizeof(Matrix) * 9);
-    doku.f_Box = malloc(sizeof(Matrix) * 9);
-    doku.state = malloc(sizeof(Matrix) * 9);
+    Sudoku doku = {
+        malloc(sizeof(Matrix) * 9),
+        malloc(sizeof(Matrix) * 9),
+        malloc(sizeof(Matrix) * 9),
+        0, 0
+    };
 
     createNewBoard(&doku);
-    matrixPrint(&doku.a_Box[0]);
-    sudokuPrintTest33(&doku.a_Box);
 
-    // createField(&doku);
+    createField(&doku);
 
-    // puts("a_Box");
-    // sudokuPrintTest33(doku.a_Box);
-    // puts("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ");
-    // puts("f_Box");
-    // sudokuPrintTest33(doku.f_Box);
-    // puts("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ");
-    // puts("state");
-    // sudokuPrintTest33(doku.state);
+    puts("a_Box");
+    sudokuPrintTest33(doku.a_Box);
+    puts("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ");
+    puts("f_Box");
+    sudokuPrintTest33(doku.f_Box);
+    puts("─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ");
+    puts("state");
+    sudokuPrintTest33(doku.state);
 
     return 0;
 }

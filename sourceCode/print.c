@@ -5,6 +5,7 @@
 #include "../headerFile/sudokuFunc.h"
 #include "../headerFile/print.h"
 
+/* 스도쿠 출력 */
 void sudokuPrint(Sudoku* doku){
     int bigX, bigY, smallX, smallY;
     int i, j;
@@ -35,19 +36,36 @@ void sudokuPrint(Sudoku* doku){
     }
 }
 
+/* 3x3 배열 출력 */
 void matrixPrint(Matrix* mtx){
-    int x, y;
+    int X, Y;
 
-    for(y = 0; y < 3; y++){
-        for(x = 0; x < 3; x++)
-            printf("%d ", mtx -> mPtr[y + 3 * x]);
+    for(Y = 0; Y < 3; Y++){
+        for(X = 0; X < 3; X++)
+            printf("%d ", mtx -> mPtr[Y * 3 + X]);
         printf("\n");
     }
     printf("\n");
 }
 
+/* 스도쿠 출력 테스트 */
+void sudokuPrintTest33(Matrix* mtx){
+    int bigX, bigY, smallX, smallY;
+    int i = 0;
 
-void sudokuPrintTest33(Matrix** mtx){
-    int i, j, k;
-    printf("%d ", mtx[] -> mPtr[]);
+    for(bigY = 0; bigY < 3; bigY++){
+        for(smallY = 0; smallY < 3; smallY++){
+            for(bigX = 0; bigX < 3; bigX++){
+                for(smallX = 0; smallX < 3; smallX++){
+                    if(mtx[bigY * 3 + bigX].mPtr[smallY * 3 + smallX])
+                        printf("%d ", mtx[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
+                    else
+                        printf("  ");
+                }
+                printf("  ");
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
 }
