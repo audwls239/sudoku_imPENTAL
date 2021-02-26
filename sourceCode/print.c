@@ -10,7 +10,6 @@ void sudokuPrint(Sudoku* doku){
     int bigX, bigY, smallX, smallY;
     int i;
 
-    system("clear");
     /* 천장 */
     for(i = 0; i < 13; i++)
         printf("■ ");
