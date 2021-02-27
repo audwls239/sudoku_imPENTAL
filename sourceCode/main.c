@@ -18,7 +18,7 @@ int main(void){
         malloc(sizeof(Matrix) * 9),
         malloc(sizeof(Matrix) * 9),
         malloc(sizeof(Matrix) * 9),
-        0, 0, 0, 0
+        0, 0, 0, 0, 0
     };
 
     /* 셋팅 구간 */
@@ -26,7 +26,7 @@ int main(void){
     createNewBoard(&doku);  // 새로운 스도쿠 생성
     createField(&doku);     // 플레이 보드 생성
 
-
+    int i = 0;
     int cmd;
     while(!doku.gameOver){
         /* 현재 화면 출력 */
@@ -61,7 +61,7 @@ int main(void){
             }
             /* 숫자 입력 */
             else if(47 < cmd && cmd < 58){
-                int i = 0;
+                i = 0;
                 switch(cmd){
                     case KEY9: i++;
                     case KEY8: i++;
@@ -94,11 +94,13 @@ int main(void){
             }
         }
         /* 과속 단속 구간 종료 */
-
-
-
     }
 
+    for(i = 0; i < 9; i++){
+        free(doku.a_Box[i].mPtr);
+        free(doku.f_Box[i].mPtr);
+        free(doku.state[i].mPtr);
+    }
     free(doku.a_Box);
     free(doku.f_Box);
     free(doku.state);
