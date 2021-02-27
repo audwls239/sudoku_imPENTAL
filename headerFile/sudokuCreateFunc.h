@@ -1,5 +1,5 @@
-#ifndef SUDOKU_FUNC_H
-#define SUDOKU_FUNC_H
+#ifndef SUDOKU_CREATE_FUNC_H
+#define SUDOKU_CREATE_FUNC_H
 
 void createNewBoard(Sudoku* doku);          // 새로운 스도쿠 생성
 

@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "../headerFile/struct.h"
-#include "../headerFile/sudokuFunc.h"
+#include "../headerFile/sudokuCreateFunc.h"
 #include "../headerFile/print.h"
 
 /* 새로운 스도쿠 생성 */
@@ -101,6 +101,7 @@ void createField(Sudoku* doku){
 
     int i;
     int amount = rand() % 14 + 51;  // 삭제할 슬롯 갯수 랜덤 출력
+    doku -> offerNumAmount = 81 - amount;
 
     for(i = 0; i < 9; i++){
         doku -> f_Box[i].mPtr = malloc(sizeof(int) * 9);   // 유저가 입력할 수 있는 게임판 생성

@@ -2,7 +2,7 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "files.associations": {
         "Sudoku.h": "c",
-        "Sudokufunc.h": "c",
+        "sudokuCreateFunc.h": "c",
         "struct.h": "c",
         "stdio.h": "c",
         "stdlib.h": "c",

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "../headerFile/struct.h"
-#include "../headerFile/sudokuFunc.h"
+#include "../headerFile/sudokuCreateFunc.h"
 #include "../headerFile/print.h"
 #include "../headerFile/define.h"
 
@@ -28,14 +28,18 @@ void sudokuPrint(Sudoku* doku){
                     /* 커서가 가리키는 슬롯 */
                     if(doku -> posX == bigX * 3 + smallX
                     && doku -> posY == bigY * 3 + smallY){
+                        /* 커서가 가리킴 && 변경 가능 슬롯 && 값이 있음 (BLUE) */
+                        if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
+                            && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 1)
+                            printf(ANSI_COLOR_BLUE "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
                         /* 커서가 가리킴 && 변경 불가능 슬롯 (GREEN) */
-                        if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]
+                        else if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
                         && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 0)
                             printf(ANSI_COLOR_GREEN "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
-                        /* 커서가 가리킴 && 변경 가능 슬롯 && 값이 있음 (BLUE) */
-                        else if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]
-                        && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 1)
-                            printf(ANSI_COLOR_BLUE "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
+                        /* 커서가 가리킴 && 힌트 받은 슬롯 (YELLOW) */
+                        else if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
+                            && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 2)
+                            printf(ANSI_COLOR_YELLOW "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
                         /* 커서가 가리킴 && 변경 가능 슬롯 && 값이 없음 (YELLOW) */
                         else
                             printf(ANSI_COLOR_YELLOW "□ " ANSI_COLOR_RESET);
@@ -43,14 +47,18 @@ void sudokuPrint(Sudoku* doku){
                     /* 커서가 가리키지 않는 슬롯 */
                     else{
                         /* 변경 가능 슬롯 (RESET) */
-                        if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]
+                        if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
                         && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 1)
                             printf("%d ", doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
                         /* 변경 불가능 슬롯 (RED) */
-                        else if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]
-                        && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 0)
+                        else if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
+                            && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 0)
                             printf(ANSI_COLOR_RED "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
-                        /* 빈칸 = 0 */
+                        /* 힌트 받은 슬롯 (YELLOW) */
+                        else if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
+                            && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 2)
+                            printf(ANSI_COLOR_YELLOW "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
+                        /* 빈칸 == 0 */
                         else
                             printf("  ");
                     }
@@ -73,6 +81,22 @@ void sudokuPrint(Sudoku* doku){
         printf("━ ");
     printf("┛ ");
     printf("\n");
+
+    /* 완성 버튼 && 힌트 버튼 */
+    printf("┃ ");
+    if(doku -> posX == 0 && doku -> posY == 9)
+        printf(ANSI_COLOR_BLUE);
+    printf("CHECK ");
+    printf(ANSI_COLOR_RESET);
+    printf("┃ ");
+    if(doku -> posX == 1 && doku -> posY == 9)
+        printf(ANSI_COLOR_BLUE);
+    printf(" HINT ");
+    printf(ANSI_COLOR_RESET);
+    printf("┃ \n");
+
+    /* 받은 힌트 갯수 */
+    printf("┃       HINT: %2d┃ \n", doku -> offerHint);
 }
 
 /* 3x3 배열 출력 */

@@ -7,10 +7,10 @@
 #include <unistd.h>
 
 #include "../headerFile/struct.h"
-#include "../headerFile/sudokuFunc.h"
+#include "../headerFile/sudokuCreateFunc.h"
 #include "../headerFile/print.h"
 #include "../headerFile/system.h"
-#include "../headerFile/gameFunc.h"
+#include "../headerFile/sudokuGameFunc.h"
 #include "../headerFile/define.h"
 
 int main(void){
@@ -18,7 +18,7 @@ int main(void){
         malloc(sizeof(Matrix) * 9),
         malloc(sizeof(Matrix) * 9),
         malloc(sizeof(Matrix) * 9),
-        0, 0
+        0, 0, 0, 0
     };
 
     /* 셋팅 구간 */
@@ -28,7 +28,11 @@ int main(void){
 
 
     int cmd;
-    while(1){
+    while(!doku.gameOver){
+        /* 현재 화면 출력 */
+        sudokuPrint(&doku);
+        printf("X: %2d Y: %2d \n", doku.posX, doku.posY);
+        
         usleep(100000);     // 선채로 죽었어...?
         system("clear");    // 화면 리셋
 
@@ -73,19 +77,31 @@ int main(void){
                         doku.f_Box[doku.posX / 3 + doku.posY / 3 * 3].mPtr[doku.posY % 3 * 3 + doku.posX % 3] = i;
                 }
             }
-            // else if(cmd == ENTER)
-            //     puts("ENTER");
-            // else
-            //     printf("%d ", cmd);
+            /* 하단 버튼 */
+            else if(cmd == ENTER){
+                if(doku.posY == 9){
+                    switch(doku.posX){
+                        /* 다 해떠염 */
+                        case 0:
+                            checkComplete(&doku);
+                            break;
+                        /* 힌트 주떼염 */
+                        case 1:
+                            requestHint(&doku);
+                            break;
+                    }
+                }
+            }
         }
         /* 과속 단속 구간 종료 */
 
 
 
-        /* 현재 화면 출력 */
-        sudokuPrint(&doku);
-        printf("X: %2d Y: %2d \n", doku.posX, doku.posY);
     }
 
+    free(doku.a_Box);
+    free(doku.f_Box);
+    free(doku.state);
+    cleanup_io();
     return 0;
 }
