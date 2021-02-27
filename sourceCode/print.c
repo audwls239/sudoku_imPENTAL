@@ -12,7 +12,7 @@ void sudokuPrint(Sudoku* doku){
     int bigX, bigY, smallX, smallY;
     int i;
 
-    /* 천장 */
+    /* 천장 출력 */
     printf("┏ ");
     for(i = 0; i < 11; i++){
         printf("━ ");
@@ -28,21 +28,21 @@ void sudokuPrint(Sudoku* doku){
                     /* 커서가 가리키는 슬롯 */
                     if(doku -> posX == bigX * 3 + smallX
                     && doku -> posY == bigY * 3 + smallY){
-                        /* 커서가 가리킴 && 변경 가능 슬롯 && 값이 있음 (BLUE) */
+                        /* 커서가 가리킴 && 변경 가능 슬롯 && 값이 있음 (GREEN) */
                         if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
                             && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 1)
-                            printf(ANSI_COLOR_BLUE "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
+                            printf(ANSI_COLOR_GREEN "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
                         /* 커서가 가리킴 && 변경 불가능 슬롯 (GREEN) */
                         else if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
                         && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 0)
                             printf(ANSI_COLOR_GREEN "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
-                        /* 커서가 가리킴 && 힌트 받은 슬롯 (YELLOW) */
+                        /* 커서가 가리킴 && 힌트 받은 슬롯 (GREEN) */
                         else if(doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] != 0
                             && doku -> state[bigY * 3 + bigX].mPtr[smallY * 3 + smallX] == 2)
-                            printf(ANSI_COLOR_YELLOW "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
-                        /* 커서가 가리킴 && 변경 가능 슬롯 && 값이 없음 (YELLOW) */
+                            printf(ANSI_COLOR_GREEN "%d " ANSI_COLOR_RESET, doku -> f_Box[bigY * 3 + bigX].mPtr[smallY * 3 + smallX]);
+                        /* 커서가 가리킴 && 변경 가능 슬롯 && 값이 없음 (GREEN) */
                         else
-                            printf(ANSI_COLOR_YELLOW "□ " ANSI_COLOR_RESET);
+                            printf(ANSI_COLOR_GREEN "□ " ANSI_COLOR_RESET);
                     }
                     /* 커서가 가리키지 않는 슬롯 */
                     else{
@@ -96,7 +96,7 @@ void sudokuPrint(Sudoku* doku){
     printf("┃ \n");
 
     /* 받은 힌트 갯수 */
-    printf("┃       HINT: %2d┃ \n", doku -> offerHint);
+    printf("┃ HINT:       %2d┃ \n", doku -> offerHint);
 }
 
 /* 3x3 배열 출력 */

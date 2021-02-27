@@ -28,15 +28,38 @@ int main(void){
 
     int i = 0;
     int cmd;
-    while(!doku.gameOver){
-        /* 현재 화면 출력 */
-        sudokuPrint(&doku);
-        printf("X: %2d Y: %2d \n", doku.posX, doku.posY);
-        
-        usleep(100000);     // 선채로 죽었어...?
-        system("clear");    // 화면 리셋
 
-        /* 키 입력 받는 과속 단속 구간 */
+    /* 시작 화면 출력 */
+    system("clear");
+    puts("┏ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ┓ ");
+    puts("┃       ┃       ┃       ┃");
+    puts("┃   S   ┃   U   ┃   D   ┃");
+    puts("┃       ┃       ┃       ┃");
+    puts("┃ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ┃");
+    puts("┃       ┃       ┃       ┃");
+    puts("┃   O   ┃   K   ┃   U   ┃");
+    puts("┃       ┃       ┃       ┃");
+    puts("┃ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ┃");
+    puts("┃       ┃       ┃       ┃");
+    puts("┃  MADE ┃   BY  ┃ im    ┃");
+    puts("┃       ┃       ┃ PENTAL┃");
+    puts("┗ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ┛ ");
+
+    puts("[MOVE]: → ↑ ↓ ←");
+    puts("[INPUT NUMBER]: 0 ~ 9");
+    puts("[ENTER]: ENTER");
+    puts("");
+    puts("Press Enter Key to Start");
+
+    while(getchar() != 10);
+
+    while(!doku.gameOver){
+        usleep(100000);     // 딜레이
+
+        system("clear");    // 화면 리셋
+        sudokuPrint(&doku); // 화면 출력
+
+        /* 키 입력 받는 구간 */
         while(((cmd = getchar()) > 0)){
             /* 커서 이동 */
             if(cmd == 27 && getchar() == 91){
@@ -59,7 +82,7 @@ int main(void){
                         break;
                 }
             }
-            /* 숫자 입력 */
+            /* 커서가 가리키는 슬롯에 입력 */
             else if(47 < cmd && cmd < 58){
                 i = 0;
                 switch(cmd){
@@ -77,15 +100,15 @@ int main(void){
                         doku.f_Box[doku.posX / 3 + doku.posY / 3 * 3].mPtr[doku.posY % 3 * 3 + doku.posX % 3] = i;
                 }
             }
-            /* 하단 버튼 */
+            /* 게임 하단 버튼 */
             else if(cmd == ENTER){
                 if(doku.posY == 9){
                     switch(doku.posX){
-                        /* 다 해떠염 */
+                        /* 완성 체크 */
                         case 0:
                             checkComplete(&doku);
                             break;
-                        /* 힌트 주떼염 */
+                        /* 힌트 제공 */
                         case 1:
                             requestHint(&doku);
                             break;
@@ -93,7 +116,7 @@ int main(void){
                 }
             }
         }
-        /* 과속 단속 구간 종료 */
+        /* 키 입력 구간 종료 */
     }
 
     for(i = 0; i < 9; i++){

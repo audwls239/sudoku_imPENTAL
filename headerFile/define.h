@@ -19,13 +19,13 @@
 #define KEY8 56
 #define KEY9 57
 
-/* 색깔 넣을 때 쓸것 */
-#define ANSI_COLOR_RED      "\x1b[31m"
-#define ANSI_COLOR_GREEN    "\x1b[32m"
-#define ANSI_COLOR_YELLOW   "\x1b[33m"
-#define ANSI_COLOR_BLUE     "\x1b[34m"
-#define ANSI_COLOR_MAGENTA  "\x1b[35m"
-#define ANSI_COLOR_CYAN     "\x1b[36m"
-#define ANSI_COLOR_RESET    "\x1b[0m"
+/* 색깔 */
+#define ANSI_COLOR_RED      "\x1b[31m"  // 기본 제공 숫자
+#define ANSI_COLOR_YELLOW   "\x1b[33m"  // 힌트
+
+#define ANSI_COLOR_GREEN    "\x1b[32m"  // 커서가 가리키는 슬롯
+#define ANSI_COLOR_BLUE     "\x1b[34m"  // 사용자가 입력한 숫자를 가리킬 때
+
+#define ANSI_COLOR_RESET    "\x1b[0m"   // 기본색 || 사용자가 입력한 숫자
 
 #endif
